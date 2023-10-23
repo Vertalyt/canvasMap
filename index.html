@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap">
+    <script defer type="module" src="./src/main.js"></script>
+    <title>Map VM</title>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="mapCanvas" width="800" height="600">
+      </canvas>
+      <div id="popup" class="popup"></div>
+      <div class="typeListMonstrs">
+        <input id="typeListMonstrs" placeholder="поиск от 3 букв" class="btn">
+        <form action="#">
+          <div class="select-box">
+              <label for="select-box1" class="label select-box1"><span class="label-desc">Монстры</span></label>
+              <select id="select-box1" class="select">
+                <option selected value=""><span class="desc">Выбери подгруппу</span></option>
+                  <option>Лесные жители</option>
+                  <option>Нежить</option>
+                  <option>Демоны</option>
+                  <option>Морские</option>
+                  <option>Элита</option>
+              </select>
+              <!-- Подсписки -->
+              <div class="sub-select" id="sub-select1">
+                  <select id="subList1" class="subList">
+                    <option selected value="">Выбери монстра</option>
+                    <option value="Скорпион">Скорпион</option>
+                    <option value="Тигрочеловек">Тигрочеловек</option>
+                    <option value="Ликантроп">Ликантроп</option>
+                    <option value="Сатир">Сатир</option>
+                    <option value="Дриада">Дриада</option>
+                    <option value="Мистический Дрэйк">Мистический Дрэйк</option>
+                    <option value="Шаркающее дерево">Шаркающее дерево</option>
+                    <option value="Лесной дух">Лесной дух</option>
+                    <option value="Грифон">Грифон</option>
+                    <option value="Древний Древень">Древний Древень</option>
+                    <option value="Королева фей">Королева фей</option>
+                    <option value="Златокрылый грифон">Златокрылый грифон</option>
+                    <option value="Василиск">Василиск</option>
+                  </select>
+              </div>
+              <div class="sub-select" id="sub-select2">
+                <select id="subList2" class="subList">
+                  <option selected value="">Выбери монстра</option>
+                    <option value="Баньши">Баньши</option>
+                    <option value="Зомби">Зомби</option>
+                    <option value="Рыцарь смерти">Рыцарь смерти</option>
+                    <option value="Лич">Лич</option>
+                    <option value="Костяной Дрэйк">Костяной Дрэйк</option>
+                    <option value="Некрофидиус">Некрофидиус</option>
+                    <option value="Мумия">Мумия</option>
+                    <option value="Вурдалак">Вурдалак</option>
+                    <option value="Древний Некрень">Древний Некрень</option>
+                    <option value="Упырь">Упырь</option>
+                  </select>
+              </div>
+              <div class="sub-select" id="sub-select3">
+                <select id="subList3" class="subList">
+                  <option selected value="">Выбери монстра</option>
+                  <option value="Сокрушитель">Сокрушитель</option>
+                  <option value="Ифрит">Ифрит</option>
+                  <option value="Нага">Нага</option>
+                  <option value="Порождение магии">Порождение магии</option>
+                  <option value="Минос">Минос</option>
+                  <option value="Огненный Дрэйк">Огненный Дрэйк</option>
+                  <option value="Суккуб">Суккуб</option>
+                  <option value="Джинн">Джинн</option>
+                  <option value="Древний Магмень">Древний Магмень</option>
+                  <option value="Дукиклоп">Дукиклоп</option>
+                </select>
+              </div>
+              <div class="sub-select" id="sub-select4">
+                <select id="subList4" class="subList">
+                  <option selected value="">Выбери монстра</option>
+                  <option value="Сахуагин-воин">Сахуагин-воин</option>
+                  <option value="Сахуагин-шаман">Сахуагин-шаман</option>
+                  <option value="Сахуагин-охотник">Сахуагин-охотник</option>
+                  <option value="Якорь">Якорь</option>
+                  <option value="Барракуда">Барракуда</option>
+                  <option value="Гроза морей">Гроза морей</option>
+                </select>
+              </div>
+              <div class="sub-select" id="sub-select5">
+                <select id="subList5" class="subList">
+                  <option value="Чёрный скорпион">Чёрный скорпион</option>
+                  <option value="Ликантроп альбинос">Ликантроп альбинос</option>
+                  <option value="Сатир берсерк">Сатир берсерк</option>
+                  <option value="Принцесса дриад">Принцесса дриад</option>
+                  <option value="Королева фей">Королева фей</option>
+                  <option value="Королева баньши">Королева баньши</option>
+                  <option value="Воин-зомби">Воин-зомби</option>
+                  <option value="Барон смерти">Барон смерти</option>
+                  <option value="Архилич">Архилич</option>
+                  <option value="Боевой сокрушитель">Боевой сокрушитель</option>
+                  <option value="Пылающий ифрит">Пылающий ифрит</option>
+                  <option value="Королевская нага">Королевская нага</option>
+                  <option value="Минос ветеран">Минос ветеран</option>
+                  <option value="Сахуагин Генерал">Сахуагин Генерал</option>
+                  <option value="Патриарх иллитидов">Патриарх иллитидов</option>
+                  <option value="Матриарх иллитидов">Матриарх иллитидов</option>
+                </select>
+              </div>
+              
+          </div>
+      </form>
+
+
+
+      </div>
+    </div>
+
+  </body>
+</html>
+
+

@@ -1,0 +1,136 @@
+body {
+  background: aliceblue;
+  display: flex;
+  justify-content: center;
+}
+
+canvas {
+  border: 1px solid black;
+}
+
+.popup {
+    position: absolute;
+    display: none;
+    left: 590px;
+    top: 522px;
+    background: #7492b9c7;
+    border-radius: 10px;
+    border: 2px solid;
+    padding: 15px;
+}
+
+.typeListMonstrs{
+  position: fixed;
+  background-color: #296666de;
+  top: 3%;
+  left: 7%;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.btn {
+  border-radius: 8px;
+  padding: 7px;
+  cursor: pointer;
+}
+
+body {
+  background: #ffffff; 
+  color: #414141;
+  font: 400 17px/2em 'Source Sans Pro', sans-serif;
+}
+
+.select-box {
+  cursor: pointer;
+  position: relative;
+  max-width: 20em;
+  margin: 1em auto;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.select,
+.label {
+  color: #414141;
+  display: block;
+  font: 400 17px/2em 'Source Sans Pro', sans-serif;
+}
+
+.select {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  padding: 5px 0;
+  height: 40px;
+  opacity: 0;
+  background: none transparent;
+  border: 0 none;
+}
+.select-box1 {
+  background: #ececec;
+  border-radius: 5px;
+}
+
+.label {
+  position: relative;
+  padding: 0px 10px;
+  cursor: pointer;
+}
+.open .label::after {
+  content: "▲";
+}
+.label::after {
+  content: "▼";
+  font-size: 12px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 0px 15px;
+  border-left: 5px solid #fff;
+}
+
+/* Стилизация подсписков и элементов */
+.sub-select {
+  display: none;
+  margin-top: 1rem;
+}
+
+.subList {
+  padding: 5px;
+  width: 100%;
+  border: 1px solid #ccc; /* Граница вокруг подсписков */
+  border-radius: 5px;
+  background: #fff; /* Фон подсписков */
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+/* Стилизация элементов в подсписках */
+.subList option {
+  padding: 5px;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Стилизация выделенных элементов */
+.subList option:checked {
+  background: #ececec;
+  color: #333;
+}
+
+
+/* Стили для меток подсписков */
+.sub-select-label {
+  position: relative;
+  padding: 0px 10px;
+  cursor: pointer;
+}
+.sub-select-label::after {
+  content: "▼";
+  font-size: 12px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 0px 15px;
+  border-left: 5px solid #fff;
+}
