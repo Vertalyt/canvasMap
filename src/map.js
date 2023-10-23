@@ -15,8 +15,8 @@ import { generateCircles, drawCircles, drawMap } from '../utils/generickCircles'
     // Отрисуйте карту с начальными координатами
     drawMap({ctx, mapImage, mapX, mapY});
     // Рисуем круги
-    circles = await generateCircles({oldcircles:circles, mapImage, mapX, mapY, canvasWidth, canvasHeight, ctx});
-  
+
+    const newCircles = await generateCircles({oldcircles:circles, mapImage});
   
     // Вычислите новые значения mapX и mapY для центрирования
     mapX = canvasWidth / 2 - centerX;
@@ -27,5 +27,5 @@ import { generateCircles, drawCircles, drawMap } from '../utils/generickCircles'
   drawMap({ctx, mapImage, mapX, mapY});
   drawCircles({mapX, mapY, canvasWidth, canvasHeight, ctx});
 
-  return {newCircles:circles, newMapX: mapX, newMapY:mapY}
+  return {newCircles, newMapX: mapX, newMapY:mapY}
   };

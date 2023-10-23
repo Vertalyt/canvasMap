@@ -10,23 +10,28 @@ import {
   elita,
 } from "../utils/generickCircles";
 
-const canvas = document.getElementById("mapCanvas");
+import { circleDiameter } from '../utils/generickCircles'
 
-initCanvas(canvas);
+const canvas = document.getElementById("mapCanvas");
+const mapImage = new Image();
+
+initCanvas(canvas, mapImage);
 
 const ctx = canvas.getContext("2d");
-const mapImage = new Image();
+
 mapImage.src = "./src/img/map.jpg";
 let isDragging = false;
 let lastX;
 let lastY;
 let mapX = -730;
 let mapY = -450;
-const circleDiameter = 19.46;
+
 
 // Получите размеры холста
 const canvasWidth = canvas.width;
 const canvasHeight = canvas.height;
+
+
 
 let circles = []; // Массив для хранения информации о кругах
 let foundCircles = []; // Массив для хранения информации о кругах с поиском
@@ -45,6 +50,11 @@ mapImage.onload = async function () {
   mapX = newMapX;
   mapY = newMapY;
 };
+
+setTimeout( () => {
+  console.log('circles', circles);
+  }, 1500 )
+  
 
 // Создаем объект, в котором будем хранить исходные цвета для каждой окружности
 const originalColors = [];
@@ -280,15 +290,40 @@ document.addEventListener(
   { passive: false }
 );
 
+
+
 function showPopup(x, y, circleInfo) {
   const popup = document.getElementById("popup");
-  popup.innerHTML = `ID: ${circleInfo.idCircles}${
-    circleInfo.listsMonsters ? `\n${circleInfo.listsMonsters}` : ""
-  }`;
-  popup.style.left = x + 10 + "px";
-  popup.style.top = y + 30 + "px";
+
+  popup.innerHTML = `ID: ${circleInfo.idCircles}${circleInfo.listsMonsters ? `\n${circleInfo.listsMonsters}` : ""}`;
+
+  // Позиция по умолчанию
+  let left = x + 10;
+  let top = y + 30;
+
+  // Проверка, чтобы избежать пересечения с нижней границей экрана
+  const windowHeight = window.innerHeight;
+  const popupHeight = popup.offsetHeight;
+
+  if (top + popupHeight > windowHeight) {
+    top = windowHeight - popupHeight - 100;
+  }
+
+  // Проверка, чтобы избежать пересечения с правой границей экрана
+  const windowWidth = window.innerWidth;
+  const popupWidth = popup.offsetWidth;
+
+  if (left + popupWidth > windowWidth) {
+    left = windowWidth - popupWidth - 100;
+  }
+
+  popup.style.left = left + "px";
+  popup.style.top = top + "px";
   popup.style.display = "block";
 }
+
+
+
 
 function handleMouseEvent(event) {
   const x = event.clientX - canvas.getBoundingClientRect().left;

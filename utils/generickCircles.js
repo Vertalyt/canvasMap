@@ -2,6 +2,8 @@ import { fetchAPIData } from "../api/api";
 import { mobsTypesColors } from './contrastColor'
 import { colors } from './generickRandomColor'
 
+
+
 let circles = [];
 export const elita = ['naga_e', 'zombi_e', 'pc_e', 'ifrit_e', 'zombi_e', 'sokr_e', 'lich_e', 'skorp_e', 'banshi_e', 'driada_e', 'tigr_e', 'minos_e', 'satir_e', 
 'dreik_e', 'zhaba_e', 'ruins', 'matriarh', 'Barrakuda']
@@ -97,30 +99,27 @@ const filtersClasses = {
 // Начальное смещение перед отрисовкой
 const startOffsetX = 5;
 const startOffsetY = 16;
-const circleDiameter = 19.46;
+export const circleDiameter = 19.46;
 
 export async function generateCircles({
   oldcircles,
   mapImage,
-  mapX,
-  mapY,
-  canvasWidth,
-  canvasHeight,
-  ctx,
 }) {
   const rezult = await fetchAPIData(filtersClasses);
 
-
+  circles.length = 0
   circles = oldcircles;
-  const numCirclesX = Math.ceil(mapImage.width / circleDiameter);
+
+
+
+  const numCirclesX = Math.ceil(mapImage.width / circleDiameter) - (Math.ceil(mapImage.width / circleDiameter)/ circleDiameter) - 1;
   const numCirclesY = Math.ceil(mapImage.height / circleDiameter);
-
   let uniqueId = 1; // Начальное значение уникального идентификатора
-
+console.log(numCirclesX);
   for (let i = 0; i < numCirclesX; i++) {
     for (let j = 0; j < numCirclesY; j++) {
-      const circleX = i * (circleDiameter + 1) + 1 + startOffsetX;
-      const circleY = j * (circleDiameter + 1) + 1 + startOffsetY;
+      const circleX = i * (circleDiameter + 1) + startOffsetX;
+      const circleY = j * (circleDiameter + 1) + startOffsetY;
       const matchingCircle = rezult.find(
         (circle) => circle.IdCircle === uniqueId
       );
@@ -142,10 +141,6 @@ export async function generateCircles({
           // Если у типа есть массив цветов, вычисляем углы для сегментов круга
           const colors = await mobsTypesColors(matchingCircle.type);
           newCircle.color = colors;
-          if(newCircle) {
-            circles.push({ ...newCircle });
-          }
-
         }
       }
       if(newCircle) {
@@ -155,9 +150,6 @@ export async function generateCircles({
       uniqueId++; // Увеличиваем уникальный идентификатор для следующей ячейки
     }
   }
-
-  // Рисуем круги
-  drawCircles(mapX, mapY, canvasWidth, canvasHeight, ctx);
   return circles;
 }
 
