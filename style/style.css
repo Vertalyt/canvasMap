@@ -19,13 +19,27 @@ canvas {
     padding: 15px;
 }
 
-.typeListMonstrs{
+.wrapperSearch {
+  display: grid;
   position: fixed;
-  background-color: #296666de;
-  top: 3%;
+  top: 5%;
   left: 7%;
+  background-color: #ccc;
+  padding: 4px 10px;
+  border-radius: 10px;
+}
+
+.checkboxWrapper {
+  display: flex;
+  padding: 1vH 2vH;
+}
+
+.typeListMonstrs{
+  display: none;
+  background-color: #296666de;
   border-radius: 10px;
   padding: 10px;
+  margin-bottom: 1vH;
 }
 
 .btn {
@@ -41,6 +55,7 @@ body {
 }
 
 .select-box {
+  display: none;
   cursor: pointer;
   position: relative;
   max-width: 20em;
@@ -133,4 +148,12 @@ body {
   top: 0;
   padding: 0px 15px;
   border-left: 5px solid #fff;
+}
+
+.show {
+  display: block;
+}
+
+.p_Checkbox {
+  margin: 2px;
 }

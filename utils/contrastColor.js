@@ -1,8 +1,9 @@
 import { typeColorsSors} from './listsTypeAndColors.js'
 import { fetchAPIData } from "../api/api";
+import { typeGroupMob } from '@/config'
 
 const filtersClasses = {
-    category: "typeGroupMob",
+    category: typeGroupMob,
   };
   
 let typeMob

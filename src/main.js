@@ -1,3 +1,4 @@
+import { mapImageSrc, startX, startY, diameterCircle } from '@/config'
 import "../style/style.css";
 
 import { initCanvas } from "../src/canvas";
@@ -10,28 +11,26 @@ import {
   elita,
 } from "../utils/generickCircles";
 
-import { circleDiameter } from '../utils/generickCircles'
-
+const circleDiameter = diameterCircle
 const canvas = document.getElementById("mapCanvas");
 const mapImage = new Image();
 
-initCanvas(canvas, mapImage);
+initCanvas(canvas);
 
 const ctx = canvas.getContext("2d");
 
-mapImage.src = "./src/img/map.jpg";
+mapImage.src = `./src/img/${mapImageSrc}`;
+
 let isDragging = false;
 let lastX;
 let lastY;
-let mapX = -730;
-let mapY = -450;
+let mapX = startX;
+let mapY = startY;
 
 
 // Получите размеры холста
 const canvasWidth = canvas.width;
 const canvasHeight = canvas.height;
-
-
 
 let circles = []; // Массив для хранения информации о кругах
 let foundCircles = []; // Массив для хранения информации о кругах с поиском
@@ -50,11 +49,6 @@ mapImage.onload = async function () {
   mapX = newMapX;
   mapY = newMapY;
 };
-
-setTimeout( () => {
-  console.log('circles', circles);
-  }, 1500 )
-  
 
 // Создаем объект, в котором будем хранить исходные цвета для каждой окружности
 const originalColors = [];
@@ -388,4 +382,12 @@ subList.forEach(function (item) {
   item.addEventListener("change", function (event) {
     findAndSortsMap(event);
   });
+});
+
+
+const searchCheckbox = document.getElementById("searchCheckbox");
+const wraperListMonstrs = document.getElementById("wraperListMonstrs");
+searchCheckbox.addEventListener("click", function () {
+  wraperListMonstrs.classList.toggle("show");
+  selectBox.classList.toggle("show");
 });

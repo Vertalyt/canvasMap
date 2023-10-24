@@ -1,12 +1,11 @@
 import { fetchAPIData } from "../api/api";
 import { mobsTypesColors } from './contrastColor'
 import { colors } from './generickRandomColor'
-
+import { categoryMap, elitaList, diameterCircle } from '@/config'
 
 
 let circles = [];
-export const elita = ['naga_e', 'zombi_e', 'pc_e', 'ifrit_e', 'zombi_e', 'sokr_e', 'lich_e', 'skorp_e', 'banshi_e', 'driada_e', 'tigr_e', 'minos_e', 'satir_e', 
-'dreik_e', 'zhaba_e', 'ruins', 'matriarh', 'Barrakuda']
+export const elita = elitaList
 
 
 export function drawCircles({ mapX, mapY, canvasWidth, canvasHeight, ctx }) {
@@ -91,7 +90,7 @@ export function drawMap({ ctx, mapImage, mapX, mapY }) {
 
 
 const filtersClasses = {
-  category: "mapVM",
+  category: categoryMap,
 };
 
 
@@ -99,7 +98,7 @@ const filtersClasses = {
 // Начальное смещение перед отрисовкой
 const startOffsetX = 5;
 const startOffsetY = 16;
-export const circleDiameter = 19.46;
+export const circleDiameter = diameterCircle;
 
 export async function generateCircles({
   oldcircles,
@@ -115,7 +114,6 @@ export async function generateCircles({
   const numCirclesX = Math.ceil(mapImage.width / circleDiameter) - (Math.ceil(mapImage.width / circleDiameter)/ circleDiameter) - 1;
   const numCirclesY = Math.ceil(mapImage.height / circleDiameter);
   let uniqueId = 1; // Начальное значение уникального идентификатора
-console.log(numCirclesX);
   for (let i = 0; i < numCirclesX; i++) {
     for (let j = 0; j < numCirclesY; j++) {
       const circleX = i * (circleDiameter + 1) + startOffsetX;
