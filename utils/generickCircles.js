@@ -1,11 +1,11 @@
 import { fetchAPIData } from "../api/api";
 import { mobsTypesColors } from './contrastColor'
 import { colors } from './generickRandomColor'
-import { categoryMap, elitaList, diameterCircle } from '@/config'
+import { categoryMap, diameterCircle } from '@/config'
 
 
 let circles = [];
-export const elita = elitaList
+
 
 
 export function drawCircles({ mapX, mapY, canvasWidth, canvasHeight, ctx }) {
@@ -25,17 +25,6 @@ export function drawCircles({ mapX, mapY, canvasWidth, canvasHeight, ctx }) {
       const centerX = circleXOnMap + circleDiameter / 2;
       const centerY = circleYOnMap + circleDiameter / 2;
       
-      if (circle.type === "abiss") {
-        abiss(ctx, centerX, centerY, circleDiameter)
-      }
-
-
-      if (elita.includes(circle.type)) {
-        const index = elita.indexOf(circle.type);
-
-        drawOrange(ctx, centerX, centerY, circleDiameter, index)
-      }
-
       if (
         circle.color &&
         circle.color.length > 1
@@ -135,15 +124,9 @@ export async function generateCircles({
           ? matchingCircle.listsMonsters
           : "";
         newCircle.color = await mobsTypesColors(matchingCircle.type) || ""; // Добавьте цвет на основе типа
-        if (Array.isArray(await mobsTypesColors(matchingCircle.type))) {
-          // Если у типа есть массив цветов, вычисляем углы для сегментов круга
-          const colors = await mobsTypesColors(matchingCircle.type);
-          newCircle.color = colors;
-        }
+        
       }
-      if(newCircle) {
         circles.push(newCircle);
-      }
 
       uniqueId++; // Увеличиваем уникальный идентификатор для следующей ячейки
     }
@@ -179,8 +162,7 @@ function abiss(ctx, centerX, centerY, circleDiameter) {
 }
 
 
-
-function drawOrange(ctx, centerX, centerY, circleDiameter, index) {
+export function drawOrange(ctx, centerX, centerY, circleDiameter, index) {
   const circleRadius = circleDiameter / 2;
   const segmentCount = 10; // Количество сегментов апельсина
   const segmentAngle = (Math.PI * 2) / segmentCount;

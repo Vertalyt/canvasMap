@@ -19,14 +19,66 @@ canvas {
     padding: 15px;
 }
 
+
+.editForm {
+  position: absolute;
+  display: none;
+  justify-items: center;
+  padding: 1vH;
+  left: 21%;
+  top: 5%;
+  background: #7492b9c7;
+  border-radius: 10px;
+  border: 2px solid;
+}
+
+.editForm > p {
+  margin: 1vH;
+}
+
+.mainWrapperInfo {
+  display: grid;
+  position: absolute;
+  top: 10%;
+  left: 7%;
+  justify-items: start;
+}
+
+.wrapperExclamation {
+  width: 50px;
+  height: 50px;
+  transition: transform 0.2s;
+  margin-top: 1rem;
+}
+
+
+.wrapperExclamation > img {
+  width: 50px;
+  cursor: pointer;
+}
+
+.wrapperExclamation:active {
+  transform: scale(0.9);
+}
+
 .wrapperSearch {
   display: grid;
-  position: fixed;
-  top: 5%;
-  left: 7%;
   background-color: #ccc;
   padding: 4px 10px;
   border-radius: 10px;
+}
+
+.wrapperInfoText {
+    display: none;
+    background-color: #ccc;
+    width: 300px;
+    padding: 10px;  
+    border-radius: 10px;
+}
+
+.wrapperInfoText > p {
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .checkboxWrapper {
@@ -157,3 +209,56 @@ body {
 .p_Checkbox {
   margin: 2px;
 }
+
+.inputField {
+  margin-bottom: 1vH;
+  border-radius: 10px;
+  padding: 7px;
+}
+
+.selectField{
+  width: 100%;
+  margin-bottom: 3vH;
+  border-radius: 10px;
+  padding: 4px;
+}
+/* Define styles for the button */
+.button {
+  display: inline-block;
+  padding: 7px 15px;
+  background-color: #007bff; /* Button background color */
+  color: #fff; /* Text color */
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  margin-bottom: 1rem;
+}
+
+/* Define styles for the button on hover */
+.button:hover {
+  background-color: #0056b3; /* Button background color on hover */
+}
+
+.addFormPoint{
+  display: grid;
+  justify-items: center;
+}
+
+.close-button {
+  position: absolute;
+  top: 3%;
+  right: 8%;
+  font-weight: bold;
+  font-size: 30px;
+  cursor: pointer;
+  transition: transform 0.2s; /* Добавляем анимацию */
+}
+
+.close-button:active {
+  transform: scale(0.9); /* Уменьшим размер при нажатии */
+}
+

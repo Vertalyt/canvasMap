@@ -1,6 +1,6 @@
 
 import { generateCircles, drawCircles, drawMap } from '../utils/generickCircles'
-
+import { axisOffsetX, axisOffsetY } from '@/config'
 
  export async function onloadMap ({ circles, ctx, mapImage, mapX, mapY, canvasWidth, canvasHeight }) {
 
@@ -9,8 +9,8 @@ import { generateCircles, drawCircles, drawMap } from '../utils/generickCircles'
     const mapImageHeight = mapImage.height;
   
     // Вычислите центральные координаты для центрирования
-    const centerX = mapImageWidth / 2;
-    const centerY = mapImageHeight / 2;
+    const centerX = mapImageWidth / 2 + axisOffsetX;
+    const centerY = mapImageHeight / 2 + axisOffsetY;
     // Отрисуйте карту с начальными координатами
     drawMap({ctx, mapImage, mapX, mapY});
     // Рисуем круги

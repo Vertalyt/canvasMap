@@ -8,8 +8,10 @@ import {
   mouseCoordinate,
   drawCircles,
   drawMap,
-  elita,
 } from "../utils/generickCircles";
+import { initializeSelectHandlers, initializeSearchCheckboxHandler } from "./searchLogic";
+
+import { addInfoCircle } from './addInfoPoint'
 
 const circleDiameter = diameterCircle
 const canvas = document.getElementById("mapCanvas");
@@ -32,7 +34,7 @@ let mapY = startY;
 const canvasWidth = canvas.width;
 const canvasHeight = canvas.height;
 
-let circles = []; // Массив для хранения информации о кругах
+export let circles = []; // Массив для хранения информации о кругах
 let foundCircles = []; // Массив для хранения информации о кругах с поиском
 
 mapImage.onload = async function () {
@@ -55,13 +57,16 @@ const originalColors = [];
 
 const typeListMonstrsInput = document.getElementById("typeListMonstrs");
 
-function findAndSortsMap(event) {
+export function findAndSortsMap(event) {
   const inputValue = event.target.value;
+
   // Assuming you have a defined 'type' variable
   if (inputValue.length > 2) {
     restorColors();
     foundCircles = findEl(inputValue);
+
     changeColors(foundCircles, ctx);
+    return 
   } else {
     restorColors();
     foundCircles.length = 0;
@@ -90,8 +95,7 @@ function findEl(typeMob) {
       item.listsMonsters &&
       item.listsMonsters.toUpperCase().includes(typeMob.toUpperCase())
   );
-  const findfMob = ollFindfMob.filter((item) => !elita.includes(item.type));
-  return findfMob;
+  return ollFindfMob;
 }
 
 function changeColors(foundCircles) {
@@ -104,7 +108,7 @@ function changeColors(foundCircles) {
   function changeColorForCircles() {
     foundCircles.forEach((circle) => {
       // Сохраняем исходный цвет перед изменением
-      if (foundCircles.length >= originalColors.length) {
+      if (foundCircles.length > originalColors.length) {
         originalColors.push(circle.color);
       }
       circle.color = currentColor;
@@ -317,9 +321,7 @@ function showPopup(x, y, circleInfo) {
 }
 
 
-
-
-function handleMouseEvent(event) {
+export function calculationCurrentPoint(event) {
   const x = event.clientX - canvas.getBoundingClientRect().left;
   const y = event.clientY - canvas.getBoundingClientRect().top;
   const mappedX = x - mapX;
@@ -333,61 +335,45 @@ function handleMouseEvent(event) {
     ) {
       const circleX = mapX + circle.x;
       const circleY = mapY + circle.y;
-      showPopup(circleX, circleY, circle);
-      return;
+      return { circleX, circleY, circle }
     }
   }
-  const popup = document.getElementById("popup");
-  popup.style.display = "none";
+}
+
+function handleMouseEvent(event) {
+  const result = calculationCurrentPoint(event);
+  if (result) {
+    const { circleX, circleY, circle } = result;
+    showPopup(circleX, circleY, circle);
+  } else {
+    const popup = document.getElementById("popup");
+    popup.style.display = "none";
+  }
 }
 
 canvas.addEventListener("mousemove", handleMouseEvent);
 canvas.addEventListener("click", handleMouseEvent);
 
 
+// Функция, обрабатывающая изменение подсписков
+function handleSubListChange(event) {
+  findAndSortsMap(event);
+}
 
-const select = document.getElementById("select-box1");
-const selectBox = document.querySelector(".select-box");
+initializeSelectHandlers(handleSubListChange);
+initializeSearchCheckboxHandler();
 
-select.addEventListener("click", function () {
-  selectBox.classList.toggle("open");
-});
 
-document.addEventListener("mouseup", function (e) {
-  if (!selectBox.contains(e.target)) {
-    selectBox.classList.remove("open");
+// инициализация логики отправки сообщения на сервер
+document.addEventListener('click', async function (event) {
+  if (event.ctrlKey) {
+    const result = calculationCurrentPoint(event);
+    if (result) {
+      const { circle } = result;
+     await addInfoCircle({
+        circles, 
+        idCircle: circle.idCircles
+      });
+    }
   }
-});
-
-select.addEventListener("change", function () {
-  const selection = select.options[select.selectedIndex].text;
-  const labelFor = select.id;
-  const label = document.querySelector(`[for='${labelFor}']`);
-  label.querySelector(".label-desc").textContent = selection;
-
-  // Скрыть все подсписки
-  document.querySelectorAll(".sub-select").forEach(function (subSelect) {
-    subSelect.style.display = "none";
-  });
-
-  // Показать подсписок, связанный с выбранным элементом
-  const subSelectId = `sub-select${select.selectedIndex}`;
-  document.getElementById(subSelectId).style.display = "block";
-});
-
-
-const subList = document.querySelectorAll(".subList");
-
-subList.forEach(function (item) {
-  item.addEventListener("change", function (event) {
-    findAndSortsMap(event);
-  });
-});
-
-
-const searchCheckbox = document.getElementById("searchCheckbox");
-const wraperListMonstrs = document.getElementById("wraperListMonstrs");
-searchCheckbox.addEventListener("click", function () {
-  wraperListMonstrs.classList.toggle("show");
-  selectBox.classList.toggle("show");
 });
