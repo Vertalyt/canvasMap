@@ -1,3 +1,4 @@
+// показываю/скрываю выпадабщий список монстров запускаю поиск
 function initializeSelectHandlers(handleSubListChange) {
     const subList = document.querySelectorAll(".subList");
     const select = document.getElementById("select-box1");
@@ -29,6 +30,7 @@ function initializeSelectHandlers(handleSubListChange) {
     });
   }
   
+  // показываю/скрываю бокс поиск
   function initializeSearchCheckboxHandler() {
     const selectBox = document.querySelector(".select-box");
     const searchCheckbox = document.getElementById("searchCheckbox");

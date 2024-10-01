@@ -1,4 +1,4 @@
-import { mapImageSrc, startX, startY, diameterCircle } from '@/config'
+import { mapImageSrc, startX, startY, diameterCircle, heightPicture } from '@/config'
 import "../style/style.css";
 
 import { initCanvas } from "../src/canvas";
@@ -8,12 +8,13 @@ import {
   mouseCoordinate,
   drawCircles,
   drawMap,
-} from "../utils/generickCircles";
+} from "../utils/generationCircles";
 import { initializeSelectHandlers, initializeSearchCheckboxHandler } from "./searchLogic";
 
 import { addInfoCircle } from './addInfoPoint'
 
-const circleDiameter = diameterCircle
+import { restoreColors } from '@/functions'
+
 const canvas = document.getElementById("mapCanvas");
 const mapImage = new Image();
 
@@ -37,6 +38,7 @@ const canvasHeight = canvas.height;
 export let circles = []; // Массив для хранения информации о кругах
 let foundCircles = []; // Массив для хранения информации о кругах с поиском
 
+// загружаю и отрисовываю карту
 mapImage.onload = async function () {
   const { newCircles, newMapX, newMapY } = await onloadMap({
     circles,
@@ -55,40 +57,33 @@ mapImage.onload = async function () {
 // Создаем объект, в котором будем хранить исходные цвета для каждой окружности
 const originalColors = [];
 
-const typeListMonstrsInput = document.getElementById("typeListMonstrs");
+const typeListMonsterInput = document.getElementById("typeListMonster");
+
+let timerId;
 
 export function findAndSortsMap(event) {
   const inputValue = event.target.value;
-
+  
   // Assuming you have a defined 'type' variable
   if (inputValue.length > 2) {
-    restorColors();
+    restoreColors(timerId, foundCircles, originalColors);
+
     foundCircles = findEl(inputValue);
 
     changeColors(foundCircles, ctx);
     return 
   } else {
-    restorColors();
+    restoreColors(timerId, foundCircles, originalColors);
     foundCircles.length = 0;
   }
 }
 
-typeListMonstrsInput.addEventListener("change", function (event) {
+typeListMonsterInput.addEventListener("change", function (event) {
+    // ищу по карте заданные точки
   findAndSortsMap(event);
 });
 
-let timerId;
-// Функция для сброса цветов к исходным
-function restorColors() {
-  clearInterval(timerId); // Очистите интервал
-  foundCircles.forEach((circle, i) => {
-    if (originalColors[i]) {
-      circle.color = originalColors[i];
-    }
-  });
-  originalColors.length = 0;
-}
-
+// ищу по конкретному типу мобов и сортирую массив для изменения этих точек
 function findEl(typeMob) {
   const ollFindfMob = circles.filter(
     (item) =>
@@ -121,7 +116,6 @@ function changeColors(foundCircles) {
       currentColor = color1;
     }
   }
-
   // Немедленно вызываем функцию для первой смены цветов
   changeColorForCircles();
 
@@ -145,13 +139,13 @@ canvas.addEventListener("mousemove", function (event) {
     });
     // Проверяем положение курсора над каждым кругом
     circles.forEach((circle) => {
-      const circleX = circle.x + circleDiameter / 2;
-      const circleY = circle.y + circleDiameter / 2;
+      const circleX = circle.x + diameterCircle / 2;
+      const circleY = circle.y + diameterCircle / 2;
       const distance = Math.sqrt(
         (circleX - mouseX) ** 2 + (circleY - mouseY) ** 2
       );
 
-      if (distance <= circleDiameter / 2) {
+      if (distance <= diameterCircle / 2) {
         circle.isHovered = true;
       }
     });
@@ -293,7 +287,7 @@ document.addEventListener(
 function showPopup(x, y, circleInfo) {
   const popup = document.getElementById("popup");
 
-  popup.innerHTML = `ID: ${circleInfo.idCircles}${circleInfo.listsMonsters ? `\n${circleInfo.listsMonsters}` : ""}`;
+
 
   // Позиция по умолчанию
   let left = x + 10;
@@ -318,27 +312,89 @@ function showPopup(x, y, circleInfo) {
   popup.style.left = left + "px";
   popup.style.top = top + "px";
   popup.style.display = "block";
+  popup.innerHTML = `ID: ${circleInfo.idCircles}${circleInfo.listsMonsters ? `\n${circleInfo.listsMonsters}` : ""}`;
 }
 
-
+// провожу общий  бинарный поиск координат х и у 
 export function calculationCurrentPoint(event) {
   const x = event.clientX - canvas.getBoundingClientRect().left;
   const y = event.clientY - canvas.getBoundingClientRect().top;
   const mappedX = x - mapX;
   const mappedY = y - mapY;
-  for (const circle of circles) {
-    if (
-      mappedX >= circle.x &&
-      mappedX <= circle.x + circleDiameter &&
-      mappedY >= circle.y &&
-      mappedY <= circle.y + circleDiameter
-    ) {
-      const circleX = mapX + circle.x;
-      const circleY = mapY + circle.y;
-      return { circleX, circleY, circle }
+
+  let left = 0;
+  let right = circles.length - 1;
+
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    const circle = circles[mid];
+    mappedX <= circle.x + diameterCircle 
+    if (mappedX >= circle.x && mappedX <= circle.x + diameterCircle) {
+      // найдена координата х, но их в массиве circles c конфига heightPicture/diameterCircle
+      const countCirclesColumn = Math.ceil(heightPicture/diameterCircle)
+
+      // определя.ю на сколько смещать обрезку массива
+      const columnPositionDistance = circle.idCircles % countCirclesColumn
+      // ищу координату у
+      const newCircleY = searchCirclesByMappedY(circle, columnPositionDistance, mappedY)
+      
+      if(newCircleY) {
+        const circleX = mapX + circle.x;
+        const circleY = mapY + newCircleY.y;
+         return { circleX, circleY, circle: newCircleY }
+      } else {
+        return null; // Возвращать null, если круг не найден.
+      }
+    } 
+    else if (mappedX < circle.x) {
+      right = mid - 1;
+    } else {
+      left = mid + 1;
     }
   }
+  return null; // Возвращать null, если круг не найден.
 }
+
+// произвожу бинарный поиск по координатуе Y и нахожу нужные елемент 
+function binarySearchYInArray(arr, mappedY) {
+  let left = 0;
+  let right = arr.length - 1;
+
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    const circle = arr[mid];
+    if (
+      mappedY >= circle.y &&
+      mappedY <= circle.y + diameterCircle
+    ) {
+      return circle; // Возвращаем круг, если условие выполняется
+    } else if (mappedY < circle.y) {
+      right = mid - 1;
+    } else {
+      left = mid + 1;
+    }
+  }
+  return null; // Возвращать null, если круг не найден.
+}
+
+// нахожу/оборезаю общий массив circles под диапазон 
+function searchCirclesByMappedY(initialCircle, columnPositionDistance, mappedY) {
+  if (initialCircle) {
+    // Ограничиваем значения startY и endY
+    const startY = initialCircle.idCircles - columnPositionDistance
+    const endY = initialCircle.idCircles + heightPicture/diameterCircle - columnPositionDistance + 1;
+    // const startY = Math.max(initialCircle.idCircles - yOffset, 0);
+    // const endY = Math.min(initialCircle.idCircles + yOffset, circles.length);
+
+        // Обрезаю другие столбцы
+    const newSearchArray = circles.slice(startY, endY)
+    // Отфильтровать массив по возрастанию x
+    return binarySearchYInArray(newSearchArray, mappedY);
+  } else {
+    return null; // Возвращать null, если начальный круг не найден.
+  }
+}
+
 
 function handleMouseEvent(event) {
   const result = calculationCurrentPoint(event);
@@ -351,12 +407,23 @@ function handleMouseEvent(event) {
   }
 }
 
-canvas.addEventListener("mousemove", handleMouseEvent);
+let timeoutId;
+
+canvas.addEventListener("mousemove", function(event) {
+  clearTimeout(timeoutId);
+  timeoutId = setTimeout(function() {
+    handleMouseEvent(event);
+  }, 100);
+});
+
+
+
 canvas.addEventListener("click", handleMouseEvent);
 
 
-// Функция, обрабатывающая изменение подсписков
+// Функция, обрабатывающая изменение подсписков 
 function handleSubListChange(event) {
+  // ищу по карте заданные точки
   findAndSortsMap(event);
 }
 

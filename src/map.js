@@ -1,5 +1,5 @@
 
-import { generateCircles, drawCircles, drawMap } from '../utils/generickCircles'
+import { generateCircles, drawCircles, drawMap } from '../utils/generationCircles'
 import { axisOffsetX, axisOffsetY } from '@/config'
 
  export async function onloadMap ({ circles, ctx, mapImage, mapX, mapY, canvasWidth, canvasHeight }) {
@@ -15,7 +15,7 @@ import { axisOffsetX, axisOffsetY } from '@/config'
     drawMap({ctx, mapImage, mapX, mapY});
     // Рисуем круги
 
-    const newCircles = await generateCircles({oldcircles:circles, mapImage});
+    const newCircles = await generateCircles({oldCircles:circles, mapImage});
   
     // Вычислите новые значения mapX и mapY для центрирования
     mapX = canvasWidth / 2 - centerX;

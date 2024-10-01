@@ -86,7 +86,7 @@ canvas {
   padding: 1vH 2vH;
 }
 
-.typeListMonstrs{
+.typeListMonster{
   display: none;
   background-color: #296666de;
   border-radius: 10px;
@@ -262,3 +262,31 @@ body {
   transform: scale(0.9); /* Уменьшим размер при нажатии */
 }
 
+.circlePuls {
+  background: green;
+  border-radius: 100%;
+  width: 100px;
+  height: 100px;
+  -webkit-animation: pulsing 2s infinite;
+  animation: pulsing 2s infinite;
+}
+
+/* @-webkit-keyframes pulsing {
+  0% {
+    -webkit-transform: scale(0.5, 0.5);
+    transform: scale(0.5, 0.5)
+  }
+  50% {
+    -webkit-transform: scale(1.0, 1.0);
+    transform: scale(1.0, 1.0);
+  }
+} */
+
+@keyframes pulsing {
+  0% {
+    transform: scale(0.5, 0.5);
+  }
+  50% {
+    transform: scale(1.0, 1.0);
+  }
+}
